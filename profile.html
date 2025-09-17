@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile | 𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow-x: hidden;
+    }
+    .background video {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; z-index: -2;
+    }
+    .overlay {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: -1;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex; justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(0,0,0,0.6);
+      position: fixed; top: 0; left: 0;
+      width: 100%; z-index: 10;
+    }
+    .navbar .logo {
+      font-size: 22px; font-weight: bold;
+      font-family: 'Times New Roman', serif;
+    }
+    .nav-links {
+      list-style: none; display: flex; gap: 25px;
+    }
+    .nav-links li a {
+      color: white; text-decoration: none;
+      font-size: 16px; transition: 0.3s;
+    }
+    .nav-links li a:hover, .nav-links li a.active { color: cyan; }
+    .user-profile {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .user-profile img {
+      width: 35px; height: 35px;
+      border-radius: 50%; border: 2px solid cyan;
+      object-fit: cover;
+    }
+
+    /* Profile Section */
+    .profile-container { margin-top: 110px; text-align: center; }
+    .profile-card {
+      display: inline-block;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(15px);
+      padding: 30px; border-radius: 20px;
+      box-shadow: 0 0 20px cyan;
+      text-align: left; width: 320px;
+    }
+    .profile-card img {
+      display: block; margin: 0 auto 20px auto;
+      border-radius: 50%; box-shadow: 0 0 15px #00f2fe;
+      width: 120px; height: 120px; object-fit: cover;
+    }
+    .profile-card label { display: block; margin: 10px 0 5px; }
+    .profile-card input {
+      width: 100%; padding: 10px;
+      border: none; border-radius: 10px;
+      margin-bottom: 15px;
+      background: rgba(255,255,255,0.2); color: white;
+      
+    }
+    .profile-card input::placeholder { color: #ddd; }
+    .profile-card button {
+      width: 100%; padding: 12px;
+      border: none; border-radius: 12px;
+      margin-top: 5px; cursor: pointer;
+      font-weight: bold;
+      background: linear-gradient(90deg, #4facfe, #00f2fe);
+      color: white; transition: 0.3s;
+    }
+    .profile-card button:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <!-- Background video -->
+  <div class="background">
+    <video autoplay muted loop playsinline>
+      <source src="vecteezy_the-planet-earth-rotates-facing-the-sun-in-starry-space-loop_5901453.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html" class="active">Profile</a></li>
+      <li><a href="subjects.html">Subjects</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="user-profile">
+      <span id="welcomeUser"></span>
+      <img id="navUserPic" src="https://via.placeholder.com/40" alt="User">
+    </div>
+  </nav>
+
+  <!-- Profile Section -->
+  <section class="profile-container">
+    <h2>👤 User Profile</h2>
+    <div class="profile-card">
+      <img id="profilePic" src="https://via.placeholder.com/120" alt="Profile Picture">
+      <form id="profileForm">
+        <label for="username">Username</label>
+        <input type="text" id="username" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+
+        <label for="profilePicInput">Profile Picture</label>
+        <input type="file" id="profilePicInput" accept="image/*">
+
+        <button type="submit">Save Changes</button>
+        <button type="button" onclick="logout()">Logout</button>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    // Load user data
+    let storedUser = localStorage.getItem("user");
+    let storedEmail = localStorage.getItem("email");
+    let storedPic = localStorage.getItem("profilePic");
+
+    if(storedUser) {
+      document.getElementById("username").value = storedUser;
+      document.getElementById("welcomeUser").innerText = "Welcome, " + storedUser;
+    } else {
+      document.getElementById("welcomeUser").innerText = "Welcome, Guest";
+    }
+
+    if(storedEmail) document.getElementById("email").value = storedEmail;
+
+    if(storedPic) {
+      document.getElementById("profilePic").src = storedPic;
+      document.getElementById("navUserPic").src = storedPic;
+    }
+
+    // Save changes
+    document.getElementById("profileForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let newUser = document.getElementById("username").value;
+      let newEmail = document.getElementById("email").value;
+      let fileInput = document.getElementById("profilePicInput");
+
+      localStorage.setItem("user", newUser);
+      localStorage.setItem("email", newEmail);
+
+      if(fileInput.files.length > 0) {
+        let reader = new FileReader();
+        reader.onload = function(event) {
+          let imgData = event.target.result;
+          localStorage.setItem("profilePic", imgData);
+          document.getElementById("profilePic").src = imgData;
+          document.getElementById("navUserPic").src = imgData;
+        }
+        reader.readAsDataURL(fileInput.files[0]);
+      }
+
+      alert("Profile updated successfully!");
+      document.getElementById("welcomeUser").innerText = "Welcome, " + newUser;
+    });
+
+    // Logout
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subjects | 𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow-x: hidden;
+    }
+    .background video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: -1;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(0,0,0,0.6);
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+    .navbar .logo {
+      font-size: 22px;
+      font-weight: bold;
+      font-family: 'Times New Roman', serif;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+    .nav-links li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    .nav-links li a:hover, .nav-links li a.active {
+      color: cyan;
+    }
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-profile img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 2px solid cyan;
+    }
+
+    /* Subjects Section */
+    .subjects-container {
+      margin-top: 120px;
+      padding: 40px;
+      text-align: center;
+    }
+    .subjects-container h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px cyan;
+    }
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+    }
+    .subject-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 0 15px cyan;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .subject-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 25px #00f2fe;
+    }
+    .subject-card h3 {
+      margin: 15px 0;
+      font-size: 20px;
+    }
+    .subject-card p {
+      font-size: 14px;
+      color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background video -->
+  <div class="background">
+    <video autoplay muted loop playsinline id="bg-video">
+      <source src="vecteezy_the-planet-earth-rotates-facing-the-sun-in-starry-space-loop_5901453.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="subjects.html" class="active">Subjects</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="user-profile">
+      <span id="welcomeUser"></span>
+      <img id="navUserPic" src="https://via.placeholder.com/40" alt="User">
+    </div>
+  </nav>
+
+  <!-- Subjects Section -->
+  <section class="subjects-container">
+    <h2>📚 Available Subjects</h2>
+    <div class="subjects-grid">
+      <div class="subject-card" onclick="openSubject('c_programming.html')">
+        <h3>C Programming</h3>
+        <p>Learn the basics of C language.</p>
+      </div>
+      <div class="subject-card" onclick="openSubject('python.html')">
+        <h3>Python</h3>
+        <p>Easy scripting and advanced coding.</p>
+      </div>
+      <div class="subject-card" onclick="openSubject('java.html')">
+        <h3>Java</h3>
+        <p>Object-Oriented Programming concepts.</p>
+      </div>
+      <div class="subject-card" onclick="openSubject('iot.html')">
+        <h3>IoT</h3>
+        <p>Internet of Things basics and projects.</p>
+      </div>
+      <div class="subject-card" onclick="openSubject('dsa.html')">
+        <h3>DSA</h3>
+        <p>Data Structures and Algorithms.</p>
+      </div>
+      <div class="subject-card" onclick="openSubject('dbms.html')">
+        <h3>DBMS</h3>
+        <p>Database Management Systems concepts.</p>
+      </div>
+      <div class="subject-card" onclick="openSubject('os.html')">
+        <h3>Operating System</h3>
+        <p>Learn processes, threads, scheduling.</p>
+      </div>
+      <div class="subject-card" onclick="openSubject('networks.html')">
+        <h3>Computer Networks</h3>
+        <p>Protocols, layers, and communication.</p>
+      </div>
+      <div class="subject-card" onclick="openSubject('compiler.html')">
+        <h3>Compiler Design</h3>
+        <p>Lexical analysis, parsing, and code gen.</p>
+      </div>
+      <div class="subject-card" onclick="openSubject('soft_skills.html')">
+        <h3>Soft Skills</h3>
+        <p>Communication, teamwork, leadership.</p>
+      </div>
+      <div class="subject-card" onclick="openSubject('aptitude.html')">
+        <h3>Aptitude</h3>
+        <p>Quantitative, logical, and reasoning.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Load username + profile pic from localStorage
+    let storedUser = localStorage.getItem("user");
+    let storedPic = localStorage.getItem("profilePic");
+
+    if(storedUser) {
+      document.getElementById("welcomeUser").innerText = "Welcome, " + storedUser;
+    } else {
+      document.getElementById("welcomeUser").innerText = "Welcome, Guest";
+    }
+
+    if(storedPic) {
+      document.getElementById("navUserPic").src = storedPic;
+    }
+
+    // Function to open subject page
+    function openSubject(page) {
+      window.location.href = page;
+    }
+  </script>
+</body>
+</html>

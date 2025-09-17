@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | 𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background with rotating earth video -->
+  <div class="background">
+    <video autoplay muted loop id="bg-video">
+      <source src="vecteezy_night-falls-on-planet-earth-rotating-in-starry-heavens-with_5632356.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+  </div>
+
+  <!-- Animated login box -->
+  <div class="login-container">
+    <h1 class="fade-in">🌍 𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</h1>
+    <form id="loginForm" class="slide-up">
+      <input type="text" id="username" placeholder="Enter Username" required>
+      <input type="password" id="password" placeholder="Enter Password" required>
+      <button type="submit">Login</button>
+      <p>Don’t have an account? <a href="signup.html">Sign Up</a></p>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

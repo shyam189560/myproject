@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quiz | 𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</title>
+  <style>
+    /* ---- Basic layout ---- */
+    :root { --accent: #00f2fe; --glass: rgba(255,255,255,0.08); --glass-2: rgba(0,0,0,0.6); }
+    html,body { height:100%; margin:0; font-family: Arial, Helvetica, sans-serif; color:#fff; }
+    body { background:#000; overflow:auto; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+    /* ---- background video + overlay ---- */
+    .bg-video {
+      position:fixed; inset:0; z-index:-2; overflow:hidden;
+    }
+    .bg-video video { width:100%; height:100%; object-fit:cover; display:block; }
+    .overlay {
+      position:fixed; inset:0; background:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65)); z-index:-1;
+    }
+
+    /* ---- navbar ---- */
+    .navbar {
+      position:fixed; top:0; left:0; right:0;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 28px; gap:20px;
+      background:var(--glass-2);
+      backdrop-filter: blur(8px);
+      z-index:20;
+      box-shadow: 0 2px 18px rgba(0,0,0,0.5);
+    }
+    .logo { font-weight:700; color:var(--accent); letter-spacing:1px; font-size:18px; }
+    .nav-links { display:flex; gap:18px; list-style:none; margin:0; padding:0; align-items:center; }
+    .nav-links a { color:#fff; text-decoration:none; font-weight:600; }
+    .nav-links a.active, .nav-links a:hover { color:var(--accent); text-shadow:0 0 8px var(--accent); }
+
+    .user-profile { display:flex; gap:10px; align-items:center; font-weight:600; }
+    .user-profile img { width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid var(--accent); }
+
+    /* ---- main area ---- */
+    main { padding:110px 24px 40px; max-width:1100px; margin:0 auto; box-sizing:border-box; }
+
+    h1 { text-align:center; margin:0 0 12px; font-size:28px; color:var(--accent); text-shadow:0 0 8px rgba(0,242,254,0.12); }
+    p.subhead { text-align:center; margin:6px 0 28px; color:#dcdcdc; max-width:900px; margin-left:auto; margin-right:auto; }
+
+    /* subject buttons */
+    .subject-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px,1fr));
+      gap:18px;
+      margin-bottom:28px;
+    }
+    .subject-btn {
+      background:var(--glass);
+      padding:18px;
+      border-radius:12px;
+      text-align:center;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 18px rgba(0,242,254,0.04);
+      user-select:none;
+    }
+    .subject-btn:hover { transform:translateY(-6px); box-shadow: 0 14px 30px rgba(0,242,254,0.08); }
+    .subject-btn .title { font-weight:700; margin-bottom:6px; color:#fff; }
+    .subject-btn .desc { color:#d9f0f5; font-size:13px; }
+
+    /* quiz card */
+    .card {
+      max-width:720px; margin: 0 auto;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:12px; padding:22px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .question-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
+    .q-title { font-size:18px; font-weight:700; color:#fff; }
+    .q-meta { font-size:13px; color:#cfeffd; opacity:.9; }
+
+    .options { text-align:left; margin-top:8px; }
+    .option {
+      background: rgba(255,255,255,0.03); border-radius:10px; padding:12px 14px; margin-bottom:8px; cursor:pointer;
+      display:flex; gap:12px; align-items:center; border:1px solid rgba(255,255,255,0.02);
+    }
+    .option input { transform:scale(1.1); margin-right:6px; }
+    .option:hover { background: rgba(0,242,254,0.03); }
+
+    .controls { display:flex; gap:12px; justify-content:flex-end; margin-top:14px; flex-wrap:wrap; }
+    .btn { background:var(--accent); color:#000; padding:10px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700; }
+    .btn.ghost { background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.08); }
+    .progress { height:8px; background:rgba(255,255,255,0.04); border-radius:8px; overflow:hidden; margin-top:14px; }
+    .progress > span { display:block; height:100%; background:linear-gradient(90deg,var(--accent), #4facfe); width:0%; transition:width .25s ease; }
+
+    /* result */
+    .result { text-align:center; padding:18px; }
+    .result h2 { margin:6px 0 12px; color:var(--accent); }
+
+    /* responsive */
+    @media (max-width:600px){
+      .navbar { padding:12px; }
+      main { padding:120px 14px 30px; }
+      .card { padding:16px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- background video -->
+  <div class="bg-video">
+    <video autoplay muted loop playsinline id="bg-video">
+      <source src="vecteezy_the-planet-earth-rotates-facing-the-sun-in-starry-space-loop_5901453.mp4" type="video/mp4">
+      <!-- fallback -->
+    </video>
+  </div>
+  <div class="overlay"></div>
+
+  <!-- navbar -->
+  <header class="navbar" role="banner">
+    <div class="logo">𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</div>
+    <nav>
+      <ul class="nav-links" role="navigation">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="subjects.html">Subjects</a></li>
+        <li><a href="quiz.html" class="active">Quiz</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a id="logoutLink" href="#">Logout</a></li>
+      </ul>
+    </nav>
+    <div class="user-profile" aria-live="polite">
+      <span id="welcomeUser">Welcome, Guest</span>
+      <img id="navUserPic" src="https://via.placeholder.com/40" alt="User pic">
+    </div>
+  </header>
+
+  <main>
+    <h1>📘 Quiz Section</h1>
+    <p class="subhead">Choose any subject and test your knowledge. Questions are sample (hardcoded) now — we'll later load them from DB.</p>
+
+    <!-- Subject selection -->
+    <section id="subjectSelection" class="subject-grid" aria-label="subjects">
+      <!-- buttons created dynamically by JS -->
+    </section>
+
+    <!-- Quiz card (hidden until a quiz is started) -->
+    <section id="quizArea" style="display:none; margin-top:18px;">
+      <div class="card" role="region" aria-labelledby="qTitle">
+        <div class="question-head">
+          <div>
+            <div id="qTitle" class="q-title">Question text</div>
+            <div id="qMeta" class="q-meta">Subject • Question x of y</div>
+          </div>
+          <div class="q-score" id="qScore" aria-hidden="true"></div>
+        </div>
+
+        <div id="options" class="options" aria-live="polite"></div>
+
+        <div class="progress" aria-hidden="false"><span id="progressBar"></span></div>
+
+        <div class="controls">
+          <button id="btnPrev" class="btn ghost">Prev</button>
+          <button id="btnNext" class="btn">Next</button>
+          <button id="btnSubmit" class="btn" style="display:none;">Submit</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result -->
+    <section id="resultArea" style="display:none; margin-top:18px;">
+      <div class="card result">
+        <h2>Quiz Finished 🎉</h2>
+        <p id="resultText"></p>
+        <div style="margin-top:12px;">
+          <button id="btnRetry" class="btn">Take Again</button>
+          <a href="subjects.html" class="btn ghost" style="text-decoration:none; display:inline-block; margin-left:8px;">Back to Subjects</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // run after DOM loads
+    document.addEventListener('DOMContentLoaded', () => {
+      // load profile info in navbar
+      const storedUser = localStorage.getItem('user');
+      const storedPic = localStorage.getItem('profilePic');
+      const welcomeEl = document.getElementById('welcomeUser');
+      const picEl = document.getElementById('navUserPic');
+      if (storedUser) welcomeEl.textContent = 'Welcome, ' + storedUser;
+      else welcomeEl.textContent = 'Welcome, Guest';
+      if (storedPic) picEl.src = storedPic;
+
+      // logout link - clears localStorage & goes to login
+      document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href = 'login.html';
+      });
+
+      /********* QUESTIONS (hardcoded for now) *********/
+      const questions = {
+        "c": [
+          { q:"Who is known as the father of C language?", options:["Dennis Ritchie","Bjarne Stroustrup","Ken Thompson","James Gosling"], a:0},
+          { q:"Which symbol ends a statement in C?", options:[".",",",";","!"], a:2},
+          { q:"Which header file contains printf()?", options:["<stdio.h>","<conio.h>","<string.h>","<math.h>"], a:0}
+        ],
+        "python": [
+          { q:"Python is a ______ language.", options:["Compiled","Interpreted","Both","None"], a:1},
+          { q:"Which keyword declares a function in Python?", options:["function","def","fun","proc"], a:1},
+          { q:"Which data type is immutable?", options:["list","dict","set","tuple"], a:3}
+        ],
+        "java": [
+          { q:"Java follows which programming paradigm?", options:["Procedural","Functional","Object-Oriented","Logic"], a:2},
+          { q:"Which keyword is used for inheritance in Java?", options:["implements","extends","inherits","super"], a:1},
+          { q:"JVM stands for?", options:["Java Virtual Machine","Java Visual Model","Just Virtual Machine","Java Variable Manager"], a:0}
+        ],
+        "iot": [
+          { q:"IoT stands for?", options:["Internet of Things","Internet of Technology","Interface of Things","Input Output Things"], a:0},
+          { q:"Common IoT microcontroller used in projects?", options:["Raspberry Pi","Arduino","Intel 8086","Both Raspberry Pi & Arduino"], a:3}
+        ],
+        "dsa": [
+          { q:"Which data structure uses LIFO?", options:["Queue","Stack","LinkedList","Tree"], a:1},
+          { q:"Big-O for binary search (sorted array)?", options:["O(n)","O(log n)","O(n^2)","O(1)"], a:1}
+        ],
+        "dbms": [
+          { q:"Which language is used to query databases?", options:["SQL","HTML","CSS","JS"], a:0},
+          { q:"What does ACID stand for (one of properties)?", options:["Atomicity","Availability","Auto","All"], a:0}
+        ],
+        "os": [
+          { q:"Which of the following is an OS?", options:["Linux","Oracle","HTML","MySQL"], a:0},
+          { q:"Scheduling algorithms are used for managing?", options:["Memory","CPU","Storage","Network"], a:1}
+        ],
+        "network": [
+          { q:"What does IP stand for?", options:["Internet Protocol","Internet Provider","Internal Process","Information Path"], a:0},
+          { q:"Which layer does TCP operate in?", options:["Application","Transport","Network","Link"], a:1}
+        ],
+        "compiler": [
+          { q:"Which phase comes first in a compiler?", options:["Code generation","Lexical analysis","Optimization","Linking"], a:1},
+          { q:"Compiler converts code from ______ to ______.", options:["machine to high-level","high-level to machine","assembly to source","none"], a:1}
+        ],
+        "soft": [
+          { q:"Soft skills are also called?", options:["Technical skills","People skills","Math skills","Coding skills"], a:1},
+          { q:"Which is a soft skill?", options:["Time management","C programming","SQL","Assembly"], a:0}
+        ],
+        "aptitude": [
+          { q:"What is 25 + 37?", options:["60","62","65","67"], a:1},
+          { q:"What is 12 × 8?", options:["96","92","86","108"], a:0}
+        ]
+      };
+
+      // subjects list (order + display label)
+      const subjects = [
+        {id:'c', label:'C Programming'},
+        {id:'python', label:'Python'},
+        {id:'java', label:'Java'},
+        {id:'iot', label:'IoT'},
+        {id:'dsa', label:'DSA'},
+        {id:'dbms', label:'DBMS'},
+        {id:'os', label:'Operating System'},
+        {id:'network', label:'Computer Networks'},
+        {id:'compiler', label:'Compiler Design'},
+        {id:'soft', label:'Soft Skills'},
+        {id:'aptitude', label:'Aptitude'}
+      ];
+
+      // build subject buttons dynamically
+      const subjectSelection = document.getElementById('subjectSelection');
+      subjects.forEach(s => {
+        const el = document.createElement('div');
+        el.className = 'subject-btn';
+        el.setAttribute('data-subject', s.id);
+        el.innerHTML = `<div class="title">${s.label}</div><div class="desc">Practice MCQs & test yourself</div>`;
+        el.addEventListener('click', () => startQuiz(s.id));
+        subjectSelection.appendChild(el);
+      });
+
+      // quiz state
+      let state = { subject:null, idx:0, score:0, answers:[] };
+
+      // DOM refs
+      const quizArea = document.getElementById('quizArea');
+      const qTitle = document.getElementById('qTitle');
+      const qMeta = document.getElementById('qMeta');
+      const optionsWrap = document.getElementById('options');
+      const progressBar = document.getElementById('progressBar');
+      const btnPrev = document.getElementById('btnPrev');
+      const btnNext = document.getElementById('btnNext');
+      const btnSubmit = document.getElementById('btnSubmit');
+      const resultArea = document.getElementById('resultArea');
+      const resultText = document.getElementById('resultText');
+      const btnRetry = document.getElementById('btnRetry');
+
+      btnPrev.addEventListener('click', () => { if(state.idx>0){ state.idx--; renderQuestion(); }});
+      btnNext.addEventListener('click', () => handleNext());
+      btnSubmit.addEventListener('click', () => handleSubmit());
+      btnRetry.addEventListener('click', () => startQuiz(state.subject));
+
+      function startQuiz(subjectId) {
+        if (!questions[subjectId] || !Array.isArray(questions[subjectId]) || questions[subjectId].length === 0) {
+          alert('No questions available for this subject yet.');
+          return;
+        }
+        // initialize
+        state.subject = subjectId;
+        state.idx = 0;
+        state.score = 0;
+        state.answers = Array(questions[subjectId].length).fill(null);
+
+        // UI: hide selection, show quiz
+        document.getElementById('subjectSelection').style.display = 'none';
+        quizArea.style.display = 'block';
+        resultArea.style.display = 'none';
+        renderQuestion();
+      }
+
+      function renderQuestion() {
+        const qArr = questions[state.subject];
+        if(!qArr || !qArr[state.idx]) { console.error('missing question', state); return; }
+        const item = qArr[state.idx];
+        qTitle.textContent = item.q;
+        qMeta.textContent = `${subjects.find(s=>s.id===state.subject).label} • Question ${state.idx+1} of ${qArr.length}`;
+        // options
+        optionsWrap.innerHTML = '';
+        item.options.forEach((opt, i) => {
+          const optWrap = document.createElement('label');
+          optWrap.className = 'option';
+          optWrap.innerHTML = `<input type="radio" name="opt" value="${i}" ${state.answers[state.idx]===i ? 'checked' : ''} /> <span>${opt}</span>`;
+          optWrap.addEventListener('click', () => {
+            // when wrapper clicked, check the radio
+            const input = optWrap.querySelector('input');
+            input.checked = true;
+          });
+          optionsWrap.appendChild(optWrap);
+        });
+
+        // progress
+        progressBar.style.width = `${((state.idx)/qArr.length)*100}%`;
+
+        // prev button
+        btnPrev.style.visibility = state.idx === 0 ? 'hidden' : 'visible';
+
+        // next/submit buttons logic
+        if (state.idx === qArr.length - 1) {
+          btnNext.style.display = 'none';
+          btnSubmit.style.display = 'inline-block';
+        } else {
+          btnNext.style.display = 'inline-block';
+          btnSubmit.style.display = 'none';
+        }
+      }
+
+      function handleNext() {
+        const sel = document.querySelector('input[name="opt"]:checked');
+        if (!sel) { alert('Please choose an option.'); return; }
+        const chosen = parseInt(sel.value,10);
+        // store answer
+        state.answers[state.idx] = chosen;
+
+        // move forward
+        state.idx++;
+        renderQuestion();
+      }
+
+      function handleSubmit() {
+        const sel = document.querySelector('input[name="opt"]:checked');
+        if (!sel && state.answers[state.idx] === null) { alert('Please choose an option.'); return; }
+        if (sel) state.answers[state.idx] = parseInt(sel.value,10);
+
+        // calculate score
+        const qArr = questions[state.subject];
+        let score = 0;
+        qArr.forEach((q,i) => {
+          if (state.answers[i] === q.a) score++;
+        });
+        state.score = score;
+
+        // show result
+        quizArea.style.display = 'none';
+        resultArea.style.display = 'block';
+        resultText.innerHTML = `You scored <strong>${score}</strong> out of <strong>${qArr.length}</strong>.`;
+        // optional: save last score to localStorage per subject
+        try {
+          localStorage.setItem(`lastScore_${state.subject}`, JSON.stringify({score, total:qArr.length, when: Date.now()}));
+        } catch(e) { /* ignore storage errors */ }
+      }
+    });
+  </script>
+</body>
+</html>

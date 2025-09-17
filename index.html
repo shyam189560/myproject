@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞 | Home</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* Profile icon small & round */
+    .user-profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-weight: bold;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(0,0,0,0.6);
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    .navbar ul li a {
+      color: white;
+      text-decoration: none;
+    }
+    .hero {
+      text-align: center;
+      color: white;
+      padding: 60px 20px;
+    }
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      color: white;
+      background: rgba(0,0,0,0.6);
+      margin-top: 20px;
+    }
+    /* Background */
+    .background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    #bg-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+  <!-- Background with rotating earth video -->
+  <div class="background">
+    <video autoplay muted loop id="bg-video">
+      <source src="vecteezy_the-planet-earth-rotates-facing-the-sun-in-starry-space-loop_5901453.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo"> 𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</div>
+    <ul>
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="subjects.html">Subjects</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="user-profile">
+      <span id="welcomeUser">Welcome, Guest</span>
+      <img id="navbarPic" src="https://via.placeholder.com/40" alt="User">
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <h1>Welcome to 𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</h1>
+    <p>Prepare for job interviews and semester exams with self-study, quizzes, and subject-wise notes.</p>
+  </header>
+
+  <!-- Subject Cards -->
+  <section class="subjects-grid">
+    <div class="card"><h2>C Programming</h2></div>
+    <div class="card"><h2>Python</h2></div>
+    <div class="card"><h2>Java</h2></div>
+    <div class="card"><h2>C++</h2></div>
+    <div class="card"><h2>DSA</h2></div>
+    <div class="card"><h2>DBMS</h2></div>
+    <div class="card"><h2>Networking</h2></div>
+    <div class="card"><h2>Operating System</h2></div>
+    <div class="card"><h2>IoT</h2></div>
+    <div class="card"><h2>DAA</h2></div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section">
+    <div class="about-container" style="display:flex; gap:20px; padding:20px; color:white;">
+      <img src="image.png" alt="Library" class="about-img" style="width:300px; border-radius:10px;">
+      <div class="about-text">
+        <h2>About 𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</h2>
+        <p>
+          This platform is designed for <b>students</b> and <b>learners of all ages</b> to prepare for <b>semester exams</b> and <b>job interviews</b>.  
+          You can explore multiple <b>subjects</b>, access <b>question-answers</b>, and take <b>quizzes</b> for self-assessment.  
+          It also provides <b>interview preparation guides</b>, <b>language notes</b>, and <b>computer science topics</b> like OS, DBMS, Networking, Programming, and more.  
+          Along with core CS subjects, you can study <b>various engineering branches</b> including Electrical, Mechanical, Civil, and Electronics.  
+          The platform features an <b>online library</b> with <b>study materials</b>, <b>e-books</b>, and <b>reference notes</b>.  
+          For interview readiness, it includes <b>common HR questions</b>, <b>technical MCQs</b>, and <b>real-world problem-solving examples</b>.  
+          With easy navigation, <b>search tools</b>, <b>bookmark options</b>, and regular updates, it becomes a <b>personalized digital study hub</b>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Created with ❤️ by <b>SHYAM</b> | © 2025 𝖒𝖞 𝖑𝖎𝖇𝖗𝖆𝖗𝖞</p>
+  </footer>
+
+  <script>
+    // Load user & profile picture
+    let storedUser = localStorage.getItem("user");
+    let storedPic = localStorage.getItem("profilePic");
+
+    if (storedUser) {
+      document.getElementById("welcomeUser").innerText = "Welcome, " + storedUser;
+    }
+    if (storedPic) {
+      document.getElementById("navbarPic").src = storedPic;
+    }
+  </script>
+</body>
+</html>

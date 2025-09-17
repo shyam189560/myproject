@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | my library</title>
+  <style>
+    /* Background video */
+    .background video {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: -1;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(0,0,0,0.7);
+      position: sticky;
+      top: 0;
+    }
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar ul li {
+      margin-left: 20px;
+    }
+    .navbar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+    .navbar ul li a:hover, .active {
+      color: #ffcc00;
+    }
+
+    /* About Section */
+    .about-section {
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .about-section h1 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+    .about-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    .about-section ul li {
+      font-size: 18px;
+      margin: 8px 0;
+    }
+
+    /* Personal Info */
+    .personal-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      color: white;
+    }
+    .personal-container {
+      display: flex;
+      background: rgba(0,0,0,0.7);
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 800px;
+      align-items: center;
+    }
+   .profile-pic {
+      width: 180px;
+      height: 220px;
+      margin-right: 30px;
+      object-fit: cover;
+      border: 3px solid #ffcc00;
+      border-radius: 10px;   /* ✅ Box with slightly rounded corners */
+    }
+    .personal-text h2 {
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    .personal-text p {
+      margin: 5px 0;
+      font-size: 18px;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background -->
+  <div class="background">
+    <video autoplay muted loop>
+      <source src="vecteezy_the-planet-earth-rotates-facing-the-sun-in-starry-space-loop_5901453.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">my library</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="subjects.html">Subjects</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+      <li><a href="about.html" class="active">About Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- About Section -->
+  <section class="about-section">
+    <h1>About my library</h1>
+    <p>Welcome to <b>my library</b>, a platform created for students and learners to prepare for exams, enhance skills, and practice quizzes.</p>
+
+    <h2>Features</h2>
+    <ul>
+      <li>📘 Subject-wise notes and materials</li>
+      <li>📝 Quizzes and practice tests</li>
+      <li>💡 Interview preparation support</li>
+      <li>🌐 Simple and interactive design</li>
+      <li>📂 Personalized study hub</li>
+    </ul>
+
+    <h2>How to Use</h2>
+    <p>Navigate to the <b>Subjects</b> page for study material, use the <b>Quiz</b> section for practice, and explore <b>About Us</b> to know more.</p>
+  </section>
+
+  <!-- Personal Info Section -->
+  <section class="personal-section">
+    <div class="personal-container">
+      <img src="WhatsApp Image 2025-08-31 at 01.56.20_9981bfa1.jpg" alt="My Photo" class="profile-pic">
+      <div class="personal-text">
+        <h2>About Me</h2>
+        <p><b>Name:</b> Shyamsundar Pal</p>
+        <p><b>Creator of:</b> my library</p>
+        <p><b>Education:</b> B.Tech in Computer Science, Specialization in AIML</p>
+        <p><b>University:</b> Brainware University</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Created with ❤️ by Shyamsundar Pal | © 2025 my library</p>
+  </footer>
+</body>
+</html>
